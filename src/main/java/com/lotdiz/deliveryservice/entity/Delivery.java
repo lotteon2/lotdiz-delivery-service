@@ -2,6 +2,7 @@ package com.lotdiz.deliveryservice.entity;
 
 import javax.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Check;
 
 @Entity
 @Getter
@@ -28,6 +29,7 @@ public class Delivery extends BaseEntity {
   private String deliveryRecipientPhoneNumber;
   
   @Column(name = "delivery_recipient_email")
+  @Check(constraints = "delivery_recipient_email LIKE '%@%'")
   private String deliveryRecipientEmail;
 
   @Column(name = "delivery_road_name", nullable = false)
@@ -47,6 +49,7 @@ public class Delivery extends BaseEntity {
 
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "delivery_status", nullable = false)
+  @Column(name = "delivery_status", nullable = false,
+          columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
   private DeliveryStatus deliveryStatus = DeliveryStatus.PENDING;
 }
