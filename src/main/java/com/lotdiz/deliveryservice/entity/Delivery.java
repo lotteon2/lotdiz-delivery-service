@@ -27,7 +27,7 @@ public class Delivery extends BaseEntity {
 
   @Column(name = "delivery_recipient_phone_number", nullable = false)
   private String deliveryRecipientPhoneNumber;
-  
+
   @Column(name = "delivery_recipient_email")
   @Check(constraints = "delivery_recipient_email LIKE '%@%'")
   private String deliveryRecipientEmail;
@@ -43,13 +43,19 @@ public class Delivery extends BaseEntity {
 
   @Column(name = "delivery_request")
   private String deliveryRequest;
-  
+
   @Column(name = "delivery_cost", nullable = false)
   private Long deliveryCost;
 
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "delivery_status", nullable = false,
-          columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
+  @Column(
+      name = "delivery_status",
+      nullable = false,
+      columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
   private DeliveryStatus deliveryStatus = DeliveryStatus.PENDING;
+
+  public void setFundingId(Long fundingId) {
+    this.fundingId = fundingId;
+  }
 }
