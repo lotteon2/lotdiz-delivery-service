@@ -30,7 +30,7 @@ public class DeliveryClientController {
     return ResponseEntity.ok()
         .body(
             SuccessResponse.builder()
-                .code(HttpStatus.OK.toString())
+                .code(String.valueOf(HttpStatus.OK.value()))
                 .message(HttpStatus.OK.name())
                 .detail("배송 생성 성공")
                 .data(Map.of("delivery", createDeliveryResponseDto))
