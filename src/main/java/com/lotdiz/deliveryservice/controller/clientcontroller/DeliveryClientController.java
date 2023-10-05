@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class DeliveryClientController {
@@ -31,7 +33,7 @@ public class DeliveryClientController {
                 .code(HttpStatus.OK.toString())
                 .message(HttpStatus.OK.name())
                 .detail("배송 생성 성공")
-                .data(createDeliveryResponseDto)
+                .data(Map.of("delivery", createDeliveryResponseDto))
                 .build());
   }
 }

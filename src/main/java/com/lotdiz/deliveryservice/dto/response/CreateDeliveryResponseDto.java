@@ -13,7 +13,6 @@ import lombok.*;
 public class CreateDeliveryResponseDto {
 
   private Long deliveryId;
-  private Long fundingId;
   private String deliveryRecipientName;
   private String deliveryRecipientPhoneNumber;
   private String deliveryRecipientEmail;
@@ -29,7 +28,6 @@ public class CreateDeliveryResponseDto {
   public static CreateDeliveryResponseDto of(Delivery delivery) {
     return CreateDeliveryResponseDto.builder()
         .deliveryId(delivery.getId())
-        .fundingId(delivery.getFundingId())
         .deliveryRecipientName(delivery.getDeliveryRecipientName())
         .deliveryRecipientPhoneNumber(delivery.getDeliveryRecipientPhoneNumber())
         .deliveryRecipientEmail(delivery.getDeliveryRecipientEmail())
