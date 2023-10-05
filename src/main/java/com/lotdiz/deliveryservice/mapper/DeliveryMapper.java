@@ -2,6 +2,7 @@ package com.lotdiz.deliveryservice.mapper;
 
 import com.lotdiz.deliveryservice.dto.request.CreateDeliveryRequestDto;
 import com.lotdiz.deliveryservice.dto.response.CreateDeliveryResponseDto;
+import com.lotdiz.deliveryservice.dto.response.GetDeliveryDetailResponseDto;
 import com.lotdiz.deliveryservice.entity.Delivery;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,4 +17,7 @@ public interface DeliveryMapper {
 
   @Mapping(source = "id", target = "deliveryId")
   CreateDeliveryResponseDto deliveryToCreateDeliveryResponseDto(Delivery delivery);
+
+  @Mapping(source = "id", target = "deliveryId")
+  GetDeliveryDetailResponseDto deliveryToGetDeliveryDetailResponseDto(Delivery delivery);
 }

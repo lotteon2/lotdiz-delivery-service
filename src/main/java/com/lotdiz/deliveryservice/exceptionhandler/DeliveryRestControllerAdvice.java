@@ -1,5 +1,6 @@
 package com.lotdiz.deliveryservice.exceptionhandler;
 
+import com.lotdiz.deliveryservice.exception.common.DomainException;
 import com.lotdiz.deliveryservice.utils.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +17,20 @@ public class DeliveryRestControllerAdvice {
 
   private static final String UNIQUE_CONSTRAINT_EXCEPTION_MESSAGE = "유니크 제약조건 오류";
   private static final String DUPLICATE_KEY_EXCEPTION_MESSAGE = "중복 키 오류";
+  private static final String DOMAIN_EXCEPTION_MESSAGE = "도메인 오류";
+
+  @ExceptionHandler(DomainException.class)
+  public ResponseEntity<ErrorResponse> domainException(DomainException e) {
+    int statusCode = e.getStatusCode();
+
+    ErrorResponse body = ErrorResponse.builder()
+            .code(String.valueOf(statusCode))
+            .message(DOMAIN_EXCEPTION_MESSAGE)
+            .detail(e.getMessage())
+            .build();
+
+    return ResponseEntity.status(statusCode).body(body);
+  }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<ErrorResponse> constraintViolationException(
