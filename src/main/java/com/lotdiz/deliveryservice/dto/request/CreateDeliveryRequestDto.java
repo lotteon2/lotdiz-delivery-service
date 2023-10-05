@@ -3,14 +3,12 @@ package com.lotdiz.deliveryservice.dto.request;
 import com.lotdiz.deliveryservice.entity.Delivery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import com.lotdiz.deliveryservice.mapper.DeliveryMapper;
+import lombok.*;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class CreateDeliveryRequestDto {
 
   @NotBlank(message = "deliveryRecipientName cannot be blank")
@@ -36,16 +34,8 @@ public class CreateDeliveryRequestDto {
   private Long deliveryCost;
 
   public Delivery toEntity(Long fundingId) {
-    return Delivery.builder()
-        .fundingId(fundingId)
-        .deliveryRecipientName(this.deliveryRecipientName)
-        .deliveryRecipientPhoneNumber(this.deliveryRecipientPhoneNumber)
-        .deliveryRecipientEmail(this.deliveryRecipientEmail)
-        .deliveryRoadName(this.deliveryRoadName)
-        .deliveryAddressDetail(this.deliveryAddressDetail)
-        .deliveryZipCode(this.deliveryZipCode)
-        .deliveryRequest(this.deliveryRequest)
-        .deliveryCost(this.deliveryCost)
-        .build();
+    Delivery delivery = DeliveryMapper.INSTANCE.createDeliveryRequestDtoToDelivery(this);
+    delivery.setFundingId(fundingId);
+    return delivery;
   }
 }
