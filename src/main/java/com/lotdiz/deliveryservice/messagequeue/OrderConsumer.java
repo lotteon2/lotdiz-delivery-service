@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderConsumer {
 
+  private final ObjectMapper mapper;
   private final DeliveryService deliveryService;
 
   @KafkaListener(topics = "create-order")
   public void createDelivery(String message, Acknowledgment ack) {
-    ObjectMapper mapper = new ObjectMapper();
     try {
       CreateDeliveryRequestDto createDeliveryRequestDto =
           mapper.readValue(message, CreateDeliveryRequestDto.class);
