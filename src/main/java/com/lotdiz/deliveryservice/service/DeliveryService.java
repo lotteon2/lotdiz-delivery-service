@@ -14,18 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DeliveryService {
 
-  private final DeliveryRepository deliveryRepository;
+    private final DeliveryRepository deliveryRepository;
 
-  @Transactional
-  public void createDelivery(CreateDeliveryRequestDto createDeliveryRequestDto) {
-    deliveryRepository.save(createDeliveryRequestDto.toEntity());
-  }
+    @Transactional
+    public void createDelivery(CreateDeliveryRequestDto createDeliveryRequestDto) {
+        deliveryRepository.save(createDeliveryRequestDto.toEntity());
+    }
 
-  public GetDeliveryDetailResponseDto getDeliveryDetail(Long fundingId) {
-    Delivery findDelivery =
-        deliveryRepository
-            .findByFundingId(fundingId)
-            .orElseThrow(DeliveryEntityNotFoundException::new);
-    return GetDeliveryDetailResponseDto.fromEntity(findDelivery);
-  }
+    public GetDeliveryDetailResponseDto getDeliveryDetail(Long fundingId) {
+        Delivery findDelivery =
+                deliveryRepository
+                        .findByFundingId(fundingId)
+                        .orElseThrow(DeliveryEntityNotFoundException::new);
+        return GetDeliveryDetailResponseDto.fromEntity(findDelivery);
+    }
+
+    @Transactional
+    public Long modifyDeliveryStatus(Long fundingId) {
+        Delivery delivery = deliveryRepository.findByFundingId(fundingId)
+                .orElseThrow(DeliveryEntityNotFoundException::new);
+        delivery.modifyDeliveryStatusToProcessing();
+        return delivery.getId();
+    }
 }
