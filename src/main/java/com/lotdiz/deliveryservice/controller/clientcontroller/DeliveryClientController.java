@@ -16,13 +16,13 @@ public class DeliveryClientController {
   private final DeliveryService deliveryService;
 
   @GetMapping(value = "/fundings/{fundingId}/delivery")
-  public ResponseEntity<SuccessResponse> getDeliveryDetail(
-      @PathVariable("fundingId") Long fundingId) {
+  public ResponseEntity<SuccessResponse<Map<String, GetDeliveryDetailResponseDto>>>
+      getDeliveryDetail(@PathVariable("fundingId") Long fundingId) {
     GetDeliveryDetailResponseDto getDeliveryDetailResponseDto =
         deliveryService.getDeliveryDetail(fundingId);
     return ResponseEntity.ok()
         .body(
-            SuccessResponse.builder()
+            SuccessResponse.<Map<String, GetDeliveryDetailResponseDto>>builder()
                 .code(String.valueOf(HttpStatus.OK.value()))
                 .message(HttpStatus.OK.name())
                 .detail("배송 조회 성공")
