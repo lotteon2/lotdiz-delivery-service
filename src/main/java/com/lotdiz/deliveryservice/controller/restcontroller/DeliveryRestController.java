@@ -1,8 +1,11 @@
 package com.lotdiz.deliveryservice.controller.restcontroller;
 
-import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lotdiz.deliveryservice.dto.request.InformationForDeliveryStartNotificationRequestDto;
+import com.lotdiz.deliveryservice.dto.response.DeliveryStartSuccessResponseDto;
+import com.lotdiz.deliveryservice.entity.Delivery;
+import com.lotdiz.deliveryservice.entity.DeliveryStatus;
+import com.lotdiz.deliveryservice.exception.DeliveryStartException;
 import com.lotdiz.deliveryservice.messagequeue.SendDeliveryRequestMessage;
 import com.lotdiz.deliveryservice.service.DeliveryService;
 import com.lotdiz.deliveryservice.utils.SuccessResponse;
@@ -17,23 +20,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DeliveryRestController {
 
-    private final DeliveryService deliveryService;
-    private final SendDeliveryRequestMessage sendDeliveryRequestMessage;
+  private final DeliveryService deliveryService;
+  private final SendDeliveryRequestMessage sendDeliveryRequestMessage;
 
-    @PostMapping("fundings/delivery-start-notification")
-    public ResponseEntity<SuccessResponse> requestDeliveryStartNotification(
-            @RequestBody InformationForDeliveryStartNotificationRequestDto informationForDeliveryStartNotificationRequestDto)
-            throws JsonProcessingException {
-        // 배송 상태 업데이트
-        Long fundingId = deliveryService.modifyDeliveryStatus(
-                informationForDeliveryStartNotificationRequestDto);
-        // 알림 시작 이벤트 발행
-        SendMessageResult sendMessageResult = sendDeliveryRequestMessage.sendDeliveryStartNotification(
-                informationForDeliveryStartNotificationRequestDto);
+  @PostMapping("fundings/delivery-start-notification")
+  public ResponseEntity<SuccessResponse<DeliveryStartSuccessResponseDto>>
+      requestDeliveryStartNotification(
+          @RequestBody
+              InformationForDeliveryStartNotificationRequestDto
+                  informationForDeliveryStartNotificationRequestDto)
+          throws JsonProcessingException {
+    // 배송 상태 업데이트
+    Delivery delivery =
+        deliveryService.modifyDeliveryStatus(informationForDeliveryStartNotificationRequestDto);
+    if (delivery.getDeliveryStatus().equals(DeliveryStatus.PROCESSING)) {
+      // 알림 시작 이벤트 발행
+      sendDeliveryRequestMessage.sendDeliveryStartNotification(
+          informationForDeliveryStartNotificationRequestDto);
 
-        return ResponseEntity.ok()
-                .body(SuccessResponse.builder().code(String.valueOf(HttpStatus.OK.value()))
-                        .detail("배송 상태 변경").data(sendMessageResult).message(HttpStatus.OK.name())
-                        .build());
+      return ResponseEntity.ok()
+          .body(
+              SuccessResponse.<DeliveryStartSuccessResponseDto>builder()
+                  .code(String.valueOf(HttpStatus.OK.value()))
+                  .detail("배송 상태 변경")
+                  .data(
+                      DeliveryStartSuccessResponseDto.builder()
+                          .deliveryStatusToProcessing("배송이 시작되었습니다!")
+                          .build())
+                  .message(HttpStatus.OK.name())
+                  .build());
+    } else {
+      throw new DeliveryStartException();
     }
+  }
 }
