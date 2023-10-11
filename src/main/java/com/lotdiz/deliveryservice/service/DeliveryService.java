@@ -17,27 +17,31 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DeliveryService {
 
-    private final DeliveryRepository deliveryRepository;
+  private final DeliveryRepository deliveryRepository;
 
-    @Transactional
-    public void createDelivery(CreateDeliveryRequestDto createDeliveryRequestDto) {
-        deliveryRepository.save(createDeliveryRequestDto.toEntity());
-    }
+  @Transactional
+  public void createDelivery(CreateDeliveryRequestDto createDeliveryRequestDto) {
+    deliveryRepository.save(createDeliveryRequestDto.toEntity());
+  }
 
-    public GetDeliveryDetailResponseDto getDeliveryDetail(Long fundingId) {
-        Delivery findDelivery = deliveryRepository.findByFundingId(fundingId)
-                .orElseThrow(DeliveryEntityNotFoundException::new);
-        return GetDeliveryDetailResponseDto.fromEntity(findDelivery);
-    }
+  public GetDeliveryDetailResponseDto getDeliveryDetail(Long fundingId) {
+    Delivery findDelivery =
+        deliveryRepository
+            .findByFundingId(fundingId)
+            .orElseThrow(DeliveryEntityNotFoundException::new);
+    return GetDeliveryDetailResponseDto.fromEntity(findDelivery);
+  }
 
-    @Transactional
-    public Long modifyDeliveryStatus(
-            InformationForDeliveryStartNotificationRequestDto informationForDeliveryStartNotificationRequestDto) {
-        Delivery delivery = deliveryRepository.findByFundingId(
-                        informationForDeliveryStartNotificationRequestDto.getFundingId())
-                .orElseThrow(DeliveryEntityNotFoundException::new);
-        Delivery deliveryStatusToProcessing = delivery.modifyDeliveryStatusToProcessing();
-        log.info("delivery status update to {}", delivery.getDeliveryStatus());
-        return deliveryStatusToProcessing.getId();
-    }
+  @Transactional
+  public Delivery modifyDeliveryStatus(
+      InformationForDeliveryStartNotificationRequestDto
+          informationForDeliveryStartNotificationRequestDto) {
+    Delivery delivery =
+        deliveryRepository
+            .findByFundingId(informationForDeliveryStartNotificationRequestDto.getFundingId())
+            .orElseThrow(DeliveryEntityNotFoundException::new);
+    Delivery deliveryStatusToProcessing = delivery.modifyDeliveryStatusToProcessing();
+    log.info("delivery status update to {}", delivery.getDeliveryStatus());
+    return deliveryStatusToProcessing;
+  }
 }

@@ -46,17 +46,3 @@ eureka:
       defaultZone: http://127.0.0.1:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${server.port}
-
-cloud:
-  aws:
-    credentials:
-      ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-    sqs:
-      delivery-start-notification-queue:
-        name: delivery-start-notification-queue.fifo
-        url: ${AWS_SQS_ENDPOINT}/delivery-start-notification-queue.fifo
