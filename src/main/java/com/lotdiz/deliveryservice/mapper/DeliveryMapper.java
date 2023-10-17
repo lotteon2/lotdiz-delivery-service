@@ -7,16 +7,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DeliveryMapper {
 
-    DeliveryMapper INSTANCE = Mappers.getMapper(DeliveryMapper.class);
+  DeliveryMapper INSTANCE = Mappers.getMapper(DeliveryMapper.class);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "deliveryTrackingNumber", ignore = true)
-    @Mapping(target = "deliveryStatus", ignore = true)
-    Delivery createDeliveryRequestDtoToDelivery(CreateDeliveryRequestDto createDeliveryRequestDto);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "deliveryTrackingNumber", ignore = true)
+  @Mapping(target = "deliveryStatus", ignore = true)
+  Delivery createDeliveryRequestDtoToDelivery(CreateDeliveryRequestDto createDeliveryRequestDto);
 
-    @Mapping(source = "id", target = "deliveryId")
-    GetDeliveryDetailResponseDto deliveryToGetDeliveryDetailResponseDto(Delivery delivery);
+  @Mapping(source = "id", target = "deliveryId")
+  GetDeliveryDetailResponseDto deliveryToGetDeliveryDetailResponseDto(Delivery delivery);
 }
