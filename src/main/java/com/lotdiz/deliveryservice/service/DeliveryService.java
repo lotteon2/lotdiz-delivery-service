@@ -2,7 +2,7 @@ package com.lotdiz.deliveryservice.service;
 
 import com.lotdiz.deliveryservice.dto.request.CreateDeliveryRequestDto;
 import com.lotdiz.deliveryservice.dto.request.InformationForDeliveryStartNotificationRequestDto;
-import com.lotdiz.deliveryservice.dto.response.GetDeliveryDetailResponseDto;
+import com.lotdiz.deliveryservice.dto.response.GetDeliveryResponseDto;
 import com.lotdiz.deliveryservice.entity.Delivery;
 import com.lotdiz.deliveryservice.exception.DeliveryEntityNotFoundException;
 import com.lotdiz.deliveryservice.repository.DeliveryRepository;
@@ -24,12 +24,12 @@ public class DeliveryService {
     deliveryRepository.save(createDeliveryRequestDto.toEntity());
   }
 
-  public GetDeliveryDetailResponseDto getDeliveryDetail(Long fundingId) {
+  public GetDeliveryResponseDto getDelivery(Long fundingId) {
     Delivery findDelivery =
         deliveryRepository
             .findByFundingId(fundingId)
             .orElseThrow(DeliveryEntityNotFoundException::new);
-    return GetDeliveryDetailResponseDto.fromEntity(findDelivery);
+    return GetDeliveryResponseDto.fromEntity(findDelivery);
   }
 
   @Transactional

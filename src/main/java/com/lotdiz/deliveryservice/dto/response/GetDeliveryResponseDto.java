@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class GetDeliveryDetailResponseDto {
+public class GetDeliveryResponseDto {
 
   private Long deliveryId;
   private String deliveryRecipientName;
@@ -24,7 +24,7 @@ public class GetDeliveryDetailResponseDto {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
-  public static GetDeliveryDetailResponseDto fromEntity(Delivery delivery) {
+  public static GetDeliveryResponseDto fromEntity(Delivery delivery) {
     return DeliveryMapper.INSTANCE.deliveryToGetDeliveryDetailResponseDto(delivery);
   }
 }
