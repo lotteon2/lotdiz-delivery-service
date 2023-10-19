@@ -2,10 +2,12 @@ package com.lotdiz.deliveryservice.service;
 
 import com.lotdiz.deliveryservice.dto.request.CreateDeliveryRequestDto;
 import com.lotdiz.deliveryservice.dto.request.InformationForDeliveryStartNotificationRequestDto;
+import com.lotdiz.deliveryservice.dto.response.DeliveryStatusResponseDto;
 import com.lotdiz.deliveryservice.dto.response.GetDeliveryResponseDto;
 import com.lotdiz.deliveryservice.entity.Delivery;
 import com.lotdiz.deliveryservice.exception.DeliveryEntityNotFoundException;
 import com.lotdiz.deliveryservice.repository.DeliveryRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,5 +45,11 @@ public class DeliveryService {
     Delivery deliveryStatusToProcessing = delivery.modifyDeliveryStatusToProcessing();
     log.info("delivery status update to {}", delivery.getDeliveryStatus());
     return deliveryStatusToProcessing;
+  }
+
+  public DeliveryStatusResponseDto getDeliveryStatus(List<Long> fundingId) {
+    return DeliveryStatusResponseDto.builder()
+        .deliveryStatusOfFundingDtos(deliveryRepository.findDeliveryStatus(fundingId))
+        .build();
   }
 }
