@@ -1,7 +1,7 @@
 package com.lotdiz.deliveryservice.controller.clientcontroller;
 
 import com.lotdiz.deliveryservice.dto.response.DeliveryStatusResponseDto;
-import com.lotdiz.deliveryservice.dto.response.GetDeliveryDetailResponseDto;
+import com.lotdiz.deliveryservice.dto.response.GetDeliveryResponseDto;
 import com.lotdiz.deliveryservice.service.DeliveryService;
 import com.lotdiz.deliveryservice.utils.SuccessResponse;
 import java.util.List;
@@ -18,17 +18,16 @@ public class FundingClientController {
   private final DeliveryService deliveryService;
 
   @GetMapping(value = "/fundings/{fundingId}/delivery")
-  public ResponseEntity<SuccessResponse<Map<String, GetDeliveryDetailResponseDto>>>
-      getDeliveryDetail(@PathVariable("fundingId") Long fundingId) {
-    GetDeliveryDetailResponseDto getDeliveryDetailResponseDto =
-        deliveryService.getDeliveryDetail(fundingId);
+  public ResponseEntity<SuccessResponse<Map<String, GetDeliveryResponseDto>>> getDeliveryDetail(
+      @PathVariable("fundingId") Long fundingId) {
+    GetDeliveryResponseDto getDeliveryResponseDto = deliveryService.getDelivery(fundingId);
     return ResponseEntity.ok()
         .body(
-            SuccessResponse.<Map<String, GetDeliveryDetailResponseDto>>builder()
+            SuccessResponse.<Map<String, GetDeliveryResponseDto>>builder()
                 .code(String.valueOf(HttpStatus.OK.value()))
                 .message(HttpStatus.OK.name())
                 .detail("배송 조회 성공")
-                .data(Map.of("delivery", getDeliveryDetailResponseDto))
+                .data(Map.of("delivery", getDeliveryResponseDto))
                 .build());
   }
 
