@@ -1,15 +1,18 @@
 package com.lotdiz.deliveryservice.controller.clientcontroller;
 
+import com.lotdiz.deliveryservice.dto.request.GetDeliveryStatusRequestDto;
 import com.lotdiz.deliveryservice.dto.response.DeliveryStatusResponseDto;
 import com.lotdiz.deliveryservice.dto.response.GetDeliveryResponseDto;
+import com.lotdiz.deliveryservice.dto.response.GetDeliveryStatusResponseDto;
 import com.lotdiz.deliveryservice.service.DeliveryService;
 import com.lotdiz.deliveryservice.utils.SuccessResponse;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,6 +43,22 @@ public class FundingClientController {
                 .code(String.valueOf(HttpStatus.OK.value()))
                 .message(HttpStatus.OK.name())
                 .data(deliveryService.getDeliveryStatus(fundingId))
+                .build());
+  }
+
+  @PostMapping("/delivery/get-status")
+  public ResponseEntity<SuccessResponse<Map<String, List<GetDeliveryStatusResponseDto>>>>
+      getDeliveryStatusByFundingIds(
+          @RequestBody GetDeliveryStatusRequestDto getDeliveryStatusRequestDto) {
+    List<GetDeliveryStatusResponseDto> getDeliveryStatusResponseDtos =
+        deliveryService.getDeliveryStatusByFundingIds(getDeliveryStatusRequestDto.getFundingIds());
+    return ResponseEntity.ok()
+        .body(
+            SuccessResponse.<Map<String, List<GetDeliveryStatusResponseDto>>>builder()
+                .code(String.valueOf(HttpStatus.OK.value()))
+                .message(HttpStatus.OK.name())
+                .detail("배송 상태 조회 성공")
+                .data(Map.of("fundings", getDeliveryStatusResponseDtos))
                 .build());
   }
 }
