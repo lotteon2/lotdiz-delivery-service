@@ -1,5 +1,7 @@
 package com.lotdiz.deliveryservice.service;
 
+import com.lotdiz.deliveryservice.dto.DeliveryStatusDto;
+import com.lotdiz.deliveryservice.dto.DeliveryStatusOfFundingDto;
 import com.lotdiz.deliveryservice.dto.request.CreateDeliveryRequestDto;
 import com.lotdiz.deliveryservice.dto.request.InformationForDeliveryStartNotificationRequestDto;
 import com.lotdiz.deliveryservice.dto.response.DeliveryStatusResponseDto;
@@ -7,6 +9,7 @@ import com.lotdiz.deliveryservice.dto.response.GetDeliveryResponseDto;
 import com.lotdiz.deliveryservice.entity.Delivery;
 import com.lotdiz.deliveryservice.exception.DeliveryEntityNotFoundException;
 import com.lotdiz.deliveryservice.repository.DeliveryRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +51,17 @@ public class DeliveryService {
   }
 
   public DeliveryStatusResponseDto getDeliveryStatus(List<Long> fundingId) {
-    return DeliveryStatusResponseDto.builder()
-        .deliveryStatusOfFundingDtos(deliveryRepository.findDeliveryStatus(fundingId))
-        .build();
+    List<DeliveryStatusOfFundingDto> deliveryStatus =
+        deliveryRepository.findDeliveryStatus(fundingId);
+    List<DeliveryStatusDto> response = new ArrayList<>();
+    deliveryStatus.forEach(
+        item ->
+            response.add(
+                DeliveryStatusDto.builder()
+                    .fundingId(item.getFundingId())
+                    .deliveryStatus(
+                        DeliveryStatusDto.getDeliveryStatusToString(item.getDeliveryStatus()))
+                    .build()));
+    return DeliveryStatusResponseDto.builder().deliveryStatusOfFundingDtos(response).build();
   }
 }
