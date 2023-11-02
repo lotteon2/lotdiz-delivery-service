@@ -14,4 +14,7 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
   @Query(
       "select new com.lotdiz.deliveryservice.dto.DeliveryStatusOfFundingDto(d.fundingId, d.deliveryStatus) from Delivery d")
   List<DeliveryStatusOfFundingDto> findDeliveryStatus(List<Long> fundingId);
+
+  @Query("select d from Delivery d where d.fundingId in :fundingIds")
+  List<Delivery> findAllByFundingIdIsIn(List<Long> fundingIds);
 }
