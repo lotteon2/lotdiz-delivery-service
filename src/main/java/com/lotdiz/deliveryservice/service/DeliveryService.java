@@ -10,14 +10,9 @@ import com.lotdiz.deliveryservice.dto.response.GetDeliveryStatusResponseDto;
 import com.lotdiz.deliveryservice.entity.Delivery;
 import com.lotdiz.deliveryservice.exception.DeliveryEntityNotFoundException;
 import com.lotdiz.deliveryservice.repository.DeliveryRepository;
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
-
->>>>>>> origin/develop
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
