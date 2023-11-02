@@ -1,5 +1,7 @@
 package com.lotdiz.deliveryservice.service;
 
+import com.lotdiz.deliveryservice.dto.DeliveryStatusDto;
+import com.lotdiz.deliveryservice.dto.DeliveryStatusOfFundingDto;
 import com.lotdiz.deliveryservice.dto.request.CreateDeliveryRequestDto;
 import com.lotdiz.deliveryservice.dto.request.InformationForDeliveryStartNotificationRequestDto;
 import com.lotdiz.deliveryservice.dto.response.DeliveryStatusResponseDto;
@@ -8,7 +10,11 @@ import com.lotdiz.deliveryservice.dto.response.GetDeliveryStatusResponseDto;
 import com.lotdiz.deliveryservice.entity.Delivery;
 import com.lotdiz.deliveryservice.exception.DeliveryEntityNotFoundException;
 import com.lotdiz.deliveryservice.repository.DeliveryRepository;
+<<<<<<< HEAD
+import java.util.ArrayList;
+=======
 
+>>>>>>> origin/develop
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,11 +57,20 @@ public class DeliveryService {
         return deliveryStatusToProcessing;
     }
 
-    public DeliveryStatusResponseDto getDeliveryStatus(List<Long> fundingIds) {
-        return DeliveryStatusResponseDto.builder()
-                .deliveryStatusOfFundingDtos(deliveryRepository.findDeliveryStatus(fundingIds))
-                .build();
-    }
+  public DeliveryStatusResponseDto getDeliveryStatus(List<Long> fundingId) {
+    List<DeliveryStatusOfFundingDto> deliveryStatus =
+        deliveryRepository.findDeliveryStatus(fundingId);
+    List<DeliveryStatusDto> response = new ArrayList<>();
+    deliveryStatus.forEach(
+        item ->
+            response.add(
+                DeliveryStatusDto.builder()
+                    .fundingId(item.getFundingId())
+                    .deliveryStatus(
+                        DeliveryStatusDto.getDeliveryStatusToString(item.getDeliveryStatus()))
+                    .build()));
+    return DeliveryStatusResponseDto.builder().deliveryStatusOfFundingDtos(response).build();
+  }
 
     public List<GetDeliveryStatusResponseDto> getDeliveryStatusByFundingIds(List<Long> fundingIds) {
         return deliveryRepository.findAllByFundingIdIsIn(fundingIds)

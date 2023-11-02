@@ -1,5 +1,6 @@
 package com.lotdiz.deliveryservice.dto.response;
 
+import com.lotdiz.deliveryservice.dto.DeliveryStatusDto;
 import com.lotdiz.deliveryservice.dto.DeliveryStatusOfFundingDto;
 import java.util.List;
 import lombok.AccessLevel;
@@ -13,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class DeliveryStatusResponseDto {
-  private List<DeliveryStatusOfFundingDto> deliveryStatusOfFundingDtos;
+  private List<DeliveryStatusDto> deliveryStatusOfFundingDtos;
 }

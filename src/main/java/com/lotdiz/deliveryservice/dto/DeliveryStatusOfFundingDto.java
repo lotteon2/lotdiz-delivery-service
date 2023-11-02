@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class DeliveryStatusOfFundingDto {
   private Long fundingId;
   private DeliveryStatus deliveryStatus;
+
 }
